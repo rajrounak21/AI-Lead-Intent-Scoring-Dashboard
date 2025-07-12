@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lead Scoring Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 20px;
+      color: #1e3a8a;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #1e40af;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1d4ed8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #1d4ed8;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #111827;
+      background: #dbeafe;
+      padding: 12px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lead Scoring Dashboard</h1>
+
+    <form id="leadForm">
+      <label>Email:
+        <input type="email" name="email" required>
+      </label>
+
+      <label>Phone Number:
+        <input type="text" name="phone_number" required>
+      </label>
+
+      <label>Credit Score:
+        <input type="number" name="credit_score" min="300" max="850" required>
+      </label>
+
+      <label>Income:
+        <input type="number" name="income" required>
+      </label>
+
+      <label>Age Group:
+        <select name="age_group" required>
+          <option>18–25</option>
+          <option>26–35</option>
+          <option>36–50</option>
+          <option>51+</option>
+        </select>
+      </label>
+
+      <label>Family Background:
+        <select name="family_background" required>
+          <option>Single</option>
+          <option>Married</option>
+          <option>Married with Kids</option>
+        </select>
+      </label>
+
+      <label>Occupation:
+        <select name="occupation" required>
+          <option>Software Engineer</option>
+          <option>Teacher</option>
+          <option>Doctor</option>
+          <option>Lawyer</option>
+          <option>Accountant</option>
+          <option>Civil Engineer</option>
+          <option>Sales Executive</option>
+          <option>Business Owner</option>
+          <option>Student</option>
+          <option>Retired</option>
+        </select>
+      </label>
+
+      <label>Comments:
+        <textarea name="comments"></textarea>
+      </label>
+
+      <label>
+        <input type="checkbox" name="consent" required>
+        I consent to data processing
+      </label>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="result"></div>
+
+    <h2>Scored Leads</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Initial Score</th>
+          <th>Reranked Score</th>
+        </tr>
+      </thead>
+      <tbody id="leadTableBody">
+        <tr>
+          <td>john@example.com</td>
+          <td>60</td>
+          <td>75</td>
+        </tr>
+        <tr>
+          <td>jane@example.com</td>
+          <td>45</td>
+          <td>30</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const form = document.getElementById("leadForm");
+    const tableBody = document.getElementById("leadTableBody");
+    const resultDiv = document.getElementById("result");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const payload = {};
+      formData.forEach((value, key) => {
+        payload[key] = value;
+      });
+
+      if (!payload.consent) {
+        alert("You must consent to data processing.");
+        return;
+      }
+
+      try {
+        const response = await fetch("/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+
+        // Show result message
+        resultDiv.innerHTML = `✅ Initial Score: <strong>${result.initial_score}</strong> | 🤖 Reranked Score: <strong>${result.reranked_score}</strong>`;
+
+        // Add to table
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+          <td>${payload.email}</td>
+          <td>${result.initial_score}</td>
+          <td>${result.reranked_score}</td>
+        `;
+        tableBody.appendChild(newRow);
+
+        form.reset();
+      } catch (error) {
+        resultDiv.innerHTML = `❌ Error scoring lead.`;
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
