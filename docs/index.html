@@ -140,7 +140,14 @@
       </label>
 
       <label>Comments:
-        <textarea name="comments"></textarea>
+        <select name="comments" required>
+          <option>urgent</option>
+          <option>not interested</option>
+          <option>call me now</option>
+          <option>budget approved</option>
+          <option>price too high</option>
+          <option>follow up</option>
+        </select>
       </label>
 
       <label>
@@ -186,12 +193,18 @@
       e.preventDefault();
 
       const formData = new FormData(form);
-      const payload = {};
-      formData.forEach((value, key) => {
-        payload[key] = value;
-      });
+      const payload = {
+        email: formData.get("email"),
+        phone_number: formData.get("phone_number"),
+        credit_score: parseInt(formData.get("credit_score")),
+        income: parseFloat(formData.get("income")),
+        age_group: formData.get("age_group"),
+        family_background: formData.get("family_background"),
+        occupation: formData.get("occupation"),
+        comments: formData.get("comments")
+      };
 
-      if (!payload.consent) {
+      if (!formData.get("consent")) {
         alert("You must consent to data processing.");
         return;
       }
@@ -205,10 +218,8 @@
 
         const result = await response.json();
 
-        // Show result message
         resultDiv.innerHTML = `✅ Initial Score: <strong>${result.initial_score}</strong> | 🤖 Reranked Score: <strong>${result.reranked_score}</strong>`;
 
-        // Add to table
         const newRow = document.createElement("tr");
         newRow.innerHTML = `
           <td>${payload.email}</td>
