@@ -134,7 +134,20 @@ uvicorn main:app --reload
 Go to [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
+✅ Deployment & Access
+Frontend Deployment:
+The HTML dashboard is deployed publicly using GitHub Pages via the docs folder in the repository:
+🔗 https://github.com/rajrounak21/AI-Lead-Intent-Scoring-Dashboard
 
+Backend Deployment:
+The FastAPI backend (model scoring and reranker logic) is deployed using Render, managed from this repository:
+🔗 https://github.com/rajrounak21/lead-backend-score
+
+Live Backend Endpoint:
+🔗 https://lead-backend-score.onrender.com/score
+
+GitHub Profile:
+🔗 https://github.com/rajrounak21
 ## ✅ Assignment Compliance
 
 - ✅ Synthetic dataset with realistic relationships
@@ -143,6 +156,8 @@ Go to [http://127.0.0.1:8000](http://127.0.0.1:8000)
 - ✅ Intent Score (0–100)
 - ✅ Rule-based + ML blended scoring
 - ✅ Single page HTML dashboard + API
+- ✅ Deployement Done of Frontend in Github and Backend on Render
+  
 
 ---
 
