@@ -140,7 +140,15 @@
       </label>
 
       <label>Comments:
-        <textarea name="comments"></textarea>
+         <select name="comment" required>
+          <option>urgent</option>
+          <option>not interested </option>
+          <option>call me now</option>
+          <option>udget approved</option>
+          <option>Price too high</option>
+          <option>follow up</option>
+    
+        </select>
       </label>
 
       <label>
@@ -197,7 +205,7 @@
       }
 
       try {
-        const response = await fetch("/score", {
+        const response = await fetch("https://lead-backend-score.onrender.com/score", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
