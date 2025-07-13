@@ -15,7 +15,7 @@ A web-based lead scoring system that predicts the intent score (0–100) of lead
 
 ```
 ├── main.py                  # FastAPI backend
-├── templates/
+├── Frontend/
 │   └── index.html           # HTML frontend
 ├── Dataset/
 │   ├── lead.csv             # Synthetic dataset (~10,000 rows)
