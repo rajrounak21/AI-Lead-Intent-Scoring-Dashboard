@@ -1,4 +1,4 @@
-# 🧠 AI Lead Intent Scoring Dashboard
+#  AI Lead Intent Scoring Dashboard
 
 A web-based lead scoring system that predicts the intent score (0–100) of leads using a machine learning model and a rule-based LLM-style re-ranker.
 
